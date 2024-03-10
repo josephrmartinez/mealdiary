@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 const openai = new OpenAI( {apiKey: process.env.OPENAI_API_KEY} );
 
-async function main() {
+export async function AnalyzeImage() {
   const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
     max_tokens: 4000,
@@ -23,7 +23,5 @@ async function main() {
       },
     ],
   });
-  console.log(response.choices[0].message);
-  console.log(response.usage);
+  return response;
 }
-main();
