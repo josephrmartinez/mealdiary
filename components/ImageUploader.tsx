@@ -2,7 +2,12 @@
 
 import { ChangeEvent, useState } from 'react';
 
-const ImageUploader: React.FC = () => {
+interface ImageUploaderProps {
+    onUpload: (imageData: string) => void;
+  }
+  
+
+const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
@@ -12,6 +17,7 @@ const ImageUploader: React.FC = () => {
       try {
         const resizedImage = await resizeImage(file);
         setPreviewUrl(resizedImage);
+        onUpload(resizedImage)
       } catch (error) {
         console.error('Error resizing image:', error);
       }
