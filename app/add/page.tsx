@@ -5,8 +5,8 @@ import { uploadToSupabase } from "./actions"
 
 export default function LogMeal() {
 
-    const handleUpload = (imageData: string) => {
-        uploadToSupabase(imageData);
+    const handleUpload = (image: File) => {
+        uploadToSupabase(image);
       };
 
     return (

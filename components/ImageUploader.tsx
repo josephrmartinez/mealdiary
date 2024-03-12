@@ -3,7 +3,7 @@
 import { ChangeEvent, useState } from 'react';
 
 interface ImageUploaderProps {
-    onUpload: (imageData: string) => void;
+    onUpload: (image: File) => void;
   }
   
 
