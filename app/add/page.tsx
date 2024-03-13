@@ -5,8 +5,11 @@ import { uploadToSupabase } from "./actions"
 
 export default function LogMeal() {
 
-    const handleUpload = (image: File) => {
-        uploadToSupabase(image);
+    const handleUpload = async (image: File) => {
+        const imageUrl = await uploadToSupabase(image);
+
+        // Send image URL to Vision GPT, update data state with results
+        console.log("imageUrl", imageUrl)
       };
 
     return (

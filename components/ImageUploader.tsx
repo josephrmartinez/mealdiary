@@ -16,7 +16,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
     if (file) {
       try {
         const resizedImage = await resizeImage(file);
-        setPreviewUrl(resizedImage);
+        setPreviewUrl(URL.createObjectURL(resizedImage));
         onUpload(resizedImage)
       } catch (error) {
         console.error('Error resizing image:', error);
@@ -24,7 +24,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
     }
   };
 
-  const resizeImage = (file: File): Promise<string> => {
+  const resizeImage = (file: File): Promise<File> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -66,9 +66,15 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
           // Resize the cropped image to 512x512
           resizedCtx.drawImage(canvas, 0, 0, croppedWidth, croppedHeight, 0, 0, 512, 512);
   
-          // Convert canvas to data URL
-          const dataUrl = resizedCanvas.toDataURL('image/jpeg');
-          resolve(dataUrl);
+          // Convert canvas to Blob
+          resizedCanvas.toBlob((blob) => {
+            if (blob) {
+              const resizedFile = new File([blob], file.name, { type: file.type });
+              resolve(resizedFile);
+            } else {
+              reject(new Error('Failed to convert canvas to Blob'));
+            }
+          }, file.type);
         };
         img.onerror = (error) => {
           reject(error);
