@@ -88,24 +88,60 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
     });
   };
 
+  const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) {
+        try {
+          const resizedImage = await resizeImage(file);
+          setPreviewUrl(URL.createObjectURL(resizedImage));
+          onUpload(resizedImage)
+        } catch (error) {
+          console.error('Error resizing image:', error);
+        }
+      }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+
+  const handleClick = () => {
+    document.getElementById('imageInput')?.click();
+  };
+
   return (
-    <div className='flex flex-col items-center'>
+    <div
+      className='flex flex-col items-center'
+      onDrop={handleDrop}
+      onDragOver={handleDragOver}
+    >
       <input
         type="file"
         accept="image/*"
         onChange={handleImageChange}
-        className="mb-2"
+        className="hidden"
+        id="imageInput"
       />
-      
-        <div className="w-[512px] h-[512px] border rounded-lg">
+
+      <div
+        className="w-[512px] h-[512px] border rounded-lg relative cursor-pointer"
+        onClick={handleClick}
+      >
+        {!previewUrl && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <p className="text-lg font-bold text-gray-500">Click here to add an image</p>
+          </div>
+        )}
         {previewUrl && (
           <img
             src={previewUrl}
             alt="Preview"
             className="w-[512px] h-[512px] rounded-lg"
-          /> )}
-        </div>
-    
+          />
+        )}
+      </div>
     </div>
   );
 };

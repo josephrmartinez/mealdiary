@@ -1,10 +1,10 @@
-import OpenAI from "openai";
-import 'dotenv/config'
+'use server'
 
+import OpenAI from "openai";
 
 const openai = new OpenAI( {apiKey: process.env.OPENAI_API_KEY} );
 
-export async function AnalyzeImage() {
+export async function AnalyzeImage(imageUrl: string) {
   const response = await openai.chat.completions.create({
     model: "gpt-4-vision-preview",
     max_tokens: 4000,
@@ -16,7 +16,7 @@ export async function AnalyzeImage() {
           {
             type: "image_url",
             image_url: {
-              "url": "https://raw.githubusercontent.com/josephrmartinez/mealdiary/main/public/512foodimg.jpg",
+              "url": imageUrl,
             },
           },
         ],
