@@ -1,32 +1,38 @@
 'use client'
 
 import React, { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { NutritionInfo } from '../database.types';
 
-interface FormData {
-  mealDescription: string;
-  protein: number | '';
-  carbs: number | '';
-  sugar: number | '';
-  fat: number | '';
-  fiber: number | '';
-  calories: number | '';
-}
 
 interface Props {
-    initialValues: FormData;
-    onSubmit: (formData: FormData) => void;
+    values?: NutritionInfo | null;
+    onSubmit: (formData: NutritionInfo) => void;
   }
 
-function MealForm({ initialValues, onSubmit }: Props) {
-    const [formData, setFormData] = useState<FormData>(initialValues);
+function MealForm({ values, onSubmit }: Props) {
+  const [formData, setFormData] = useState<NutritionInfo>({
+    meal_description: '',
+    protein_grams: null,
+    carbs_grams: null,
+    sugar_grams: null,
+    fat_grams: null,
+    fiber_grams: null,
+    calories: null,
+  });
 
-    useEffect(() => {
-      setFormData(initialValues);
-    }, [initialValues]);
+  useEffect(() => {
+    console.log("new values detected", values)
+    if (values) {
+      setFormData(values);
+    }
+  }, [values]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
-    setFormData({ ...formData, [id]: value });
+    setFormData(prev => ({
+      ...prev,
+      [id]: value.trim() === '' ? null : parseFloat(value)
+    }));
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -44,8 +50,8 @@ function MealForm({ initialValues, onSubmit }: Props) {
         <textarea
           className='border rounded-lg p-2 w-full text-2xl text-center font-semibold'
           id="mealDescription"
-          value={formData.mealDescription}
-          onChange={(e) => setFormData({ ...formData, mealDescription: e.target.value })}
+          value={formData.meal_description || ''}
+          onChange={(e) => setFormData({ ...formData, meal_description: e.target.value })}
         />
       </div>
       <div className='grid grid-cols-2 gap-8 text-2xl font-semibold my-4 mx-2'>
@@ -54,7 +60,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="protein"
-            value={formData.protein}
+            value={formData.protein_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
@@ -64,7 +70,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="carbs"
-            value={formData.carbs}
+            value={formData.carbs_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
@@ -74,7 +80,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="sugar"
-            value={formData.sugar}
+            value={formData.sugar_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
@@ -84,7 +90,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="fat"
-            value={formData.fat}
+            value={formData.fat_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
@@ -94,7 +100,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="fiber"
-            value={formData.fiber}
+            value={formData.fiber_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
@@ -104,7 +110,7 @@ function MealForm({ initialValues, onSubmit }: Props) {
           <input
             type="number"
             id="calories"
-            value={formData.calories}
+            value={formData.calories ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />

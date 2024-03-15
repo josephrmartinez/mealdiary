@@ -12,7 +12,7 @@ export async function AnalyzeImage(imageUrl: string) {
       {
         role: "user",
         content: [
-          { type: "text", text: "You are an expert dietician and you have access to a database with food nutrition information. Please return a complete meal diary entry for the meal pictured in this image. Return your response in JSON format with the following structure: {meal_description: string, protein(g): number carbs(g): number, sugar(g): number, fat(g): number, fiber(g): number, calories: number } DO NOT return ANYTHING other than the JSON response with exactly the requested fields." },
+          { type: "text", text: "You are an expert dietician and you have access to a database with food nutrition information. Please return a complete meal diary entry for the meal pictured in this image. Return your response in JSON format with the following structure: { meal_description: string; protein_grams: number; carbs_grams: number; sugar_grams: number; fat_grams: number; fiber_grams: number; calories: number } DO NOT return ANYTHING other than the JSON response with exactly the requested fields. Your answer should start and end with brackets. Do not include backticks or a type declaration." },
           {
             type: "image_url",
             image_url: {
@@ -23,5 +23,25 @@ export async function AnalyzeImage(imageUrl: string) {
       },
     ],
   });
-  return response;
+  if (response.choices[0].message.content){
+    const validatedJSON = await ValidateJSON(response.choices[0].message.content)
+    return validatedJSON
+  }
+}
+
+export async function ValidateJSON(json: string) {
+  const response = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo-0125",
+    response_format: { type: "json_object"},
+    messages: [
+      {
+        role: "system",
+        content:  "You are a JSON validator. The user will pass you a piece of text and you will look carefully to see if there are any errors such as trailing commas, backticks, or other unnacceptable formatting. Return your response in JSON format with the following structure: { meal_description: string; protein_grams: number; carbs_grams: number; sugar_grams: number; fat_grams: number; fiber_grams: number; calories: number } DO NOT return ANYTHING other than the JSON response with exactly the requested fields." },
+      {
+        role: "user",
+        content: json
+      }
+    ],
+  });
+  return response.choices[0].message.content;
 }

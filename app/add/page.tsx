@@ -5,9 +5,12 @@ import ImageUploader from "@/components/ImageUploader"
 import { uploadToSupabase } from "./actions"
 import { AnalyzeImage } from "@/utils/ai/predictions";
 import MealForm from "./MealForm";
+import { NutritionInfo } from "../database.types";
+
+
 
 export default function LogMeal() {
-    const [results, setresults] = useState<string | null>(null)
+    const [results, setResults] = useState<NutritionInfo | null>(null)
 
     const handleUpload = async (image: File) => {
         const imageUrl = await uploadToSupabase(image);
@@ -15,11 +18,11 @@ export default function LogMeal() {
 
         if (imageUrl) {
         const prediction = await AnalyzeImage(imageUrl)
-        console.log("results", prediction.choices[0].message.content)
+        console.log("prediction", prediction)
 
-        if (prediction.choices[0].message.content) {
-            const predictionObject = JSON.parse(prediction.choices[0].message.content)
-            setresults(prediction.choices[0].message.content)
+        if (prediction) {
+            const predictionObject = JSON.parse(prediction)
+            setResults(predictionObject)
         }
         
         }
@@ -29,26 +32,28 @@ export default function LogMeal() {
         console.log("meal logged")
       }
 
-
-      const test = 
-        {
-        mealDescription: "Plate with scrambled eggs, pulled chicken, avocado, and onions",
-        protein: 35, 
-        carbs: 15, 
-        sugar: 3, 
-        fat: 25, 
-        fiber: 7, 
-        calories: 450 }
-
     return (
         <div className="flex flex-col w-[512px] mt-4">
 
             <ImageUploader onUpload={handleUpload} />
             <div>
-                <MealForm initialValues={test} onSubmit={handleSubmitMeal}/>
+                <MealForm values={results} onSubmit={handleSubmitMeal}/>
 
             </div>
 
         </div>
     )
 }
+
+
+
+// const test = 
+// {
+//   "meal_description": "Scrambled eggs, shredded chicken, avocado, and onions",
+//   "protein_grams": 35,
+//   "carbs_grams": 17,
+//   "sugar_grams": 5,
+//   "fat_grams": 28,
+//   "fiber_grams": 10,
+//   "calories": 450
+// }
