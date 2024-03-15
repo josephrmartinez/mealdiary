@@ -56,50 +56,50 @@ function MealForm({ values, onSubmit }: Props) {
       </div>
       <div className='grid grid-cols-2 gap-8 text-2xl font-semibold my-4 mx-2'>
         <div>
-          <label htmlFor="protein">Protein (g):</label>
+          <label htmlFor="protein_grams">Protein (g):</label>
           <input
             type="number"
-            id="protein"
+            id="protein_grams"
             value={formData.protein_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
         </div>
         <div>
-          <label htmlFor="carbs">Carbs (g):</label>
+          <label htmlFor="carbs_grams">Carbs (g):</label>
           <input
             type="number"
-            id="carbs"
+            id="carbs_grams"
             value={formData.carbs_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
         </div>
         <div>
-          <label htmlFor="sugar">Sugar (g):</label>
+          <label htmlFor="sugar_grams">Sugar (g):</label>
           <input
             type="number"
-            id="sugar"
+            id="sugar_grams"
             value={formData.sugar_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
         </div>
         <div>
-          <label htmlFor="fat">Fat (g):</label>
+          <label htmlFor="fat_grams">Fat (g):</label>
           <input
             type="number"
-            id="fat"
+            id="fat_grams"
             value={formData.fat_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
           />
         </div>
         <div>
-          <label htmlFor="fiber">Fiber (g):</label>
+          <label htmlFor="fiber_grams">Fiber (g):</label>
           <input
             type="number"
-            id="fiber"
+            id="fiber_grams"
             value={formData.fiber_grams ?? ''}
             onChange={handleChange}
             className='ml-4 w-20 border rounded-lg p-2'
