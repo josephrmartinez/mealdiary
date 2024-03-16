@@ -126,8 +126,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload }) => {
       />
 
       <div
-        className="border rounded-lg relative cursor-pointer overflow-hidden"
-        style={{ width: '100%', height: '100%', maxWidth: '512px', maxHeight: '512px' }}
+        className="border rounded-lg relative cursor-pointer overflow-hidden w-[512px] h-[512px]"
         onClick={handleClick}
       >
         {!previewUrl && (

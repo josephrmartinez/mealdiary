@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.0.17",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.7",
     "autoprefixer": "10.4.17",

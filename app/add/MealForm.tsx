@@ -61,19 +61,36 @@ function MealForm({ values, onSubmit }: Props) {
   };
 
   return (
-    <div className='w-full mx-auto my-4 lg:my-0'>
+    <div className=' w-[512px] h-[512px] mx-auto my-4 lg:my-0 rounded-lg'>
 
-    <form onSubmit={handleSubmit} className='flex flex-col'>
-      <div>
+    <form onSubmit={handleSubmit} className='flex flex-col items-center h-full'>
+      
+      <div className='h-fit w-5/6'>
         <label htmlFor="mealDescription" className='sr-only'>Meal Description:</label>
-        <textarea
-          className=' rounded-lg p-2 w-full text-2xl text-center font-semibold bg-inherit'
+        <div
+          className='border h-fit border-gray-200 text-green-900 rounded-md p-2 w-full text-2xl text-center font-bold bg-inherit'
           id="mealDescription"
-          value={formData.meal_description || ''}
-          onChange={(e) => setFormData({ ...formData, meal_description: e.target.value })}
-        />
+          contentEditable={true}
+          onInput={(e) => {
+            const target = e.target as HTMLDivElement;
+            const newText = target.textContent || '';
+            setFormData({ ...formData, meal_description: newText })
+          
+            const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(target);
+    range.collapse(false); // Collapse the range to the end of the content
+    if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+          
+          }}
+        >
+          {formData.meal_description || ''}
+        </div>
       </div>
-      <div className='grid grid-cols-2 gap-8 text-xl font-semibold my-4 mx-2'>
+      <div className='grid grid-cols-2 gap-6 px-6 text-xl font-semibold text-gray-700 my-4 mx-6 '>
         <div>
           <label htmlFor="protein_grams">Protein (g):</label>
           <input
@@ -81,7 +98,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="protein_grams"
             value={formData.protein_grams ?? ''}
             onChange={handleChange}
-            className='ml-1 w-20 bg-inherit rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2 border border-gray-200'
           />
         </div>
         <div>
@@ -91,7 +108,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="carbs_grams"
             value={formData.carbs_grams ?? ''}
             onChange={handleChange}
-            className='ml-1 w-20 bg-inherit rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit border border-gray-200 rounded-lg p-2'
           />
         </div>
         <div>
@@ -101,7 +118,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="sugar_grams"
             value={formData.sugar_grams ?? ''}
             onChange={handleChange}
-            className='ml-1 w-20 bg-inherit rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2 border border-gray-200'
           />
         </div>
         <div>
@@ -111,7 +128,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="fat_grams"
             value={formData.fat_grams ?? ''}
             onChange={handleChange}
-            className='ml-1 w-20 bg-inherit rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2 border border-gray-200'
           />
         </div>
         <div>
@@ -121,7 +138,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="fiber_grams"
             value={formData.fiber_grams ?? ''}
             onChange={handleChange}
-            className='ml-1 w-20 bg-inherit rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2 border border-gray-200'
           />
         </div>
         <div>
@@ -131,25 +148,36 @@ function MealForm({ values, onSubmit }: Props) {
             id="calories"
             value={formData.calories ?? ''}
             onChange={handleChange}
-            className='ml-1 w-24 bg-inherit rounded-lg p-2'
+            className='ml-1 w-24 bg-inherit rounded-lg p-2 border border-gray-200'
           />
         </div>
-        <div className='col-span-2'>
-          <label htmlFor="date">Date and Time:</label>
+        
+
+      </div>
+      <div className='w-5/6'>
+          <label htmlFor="date"></label>
           <input
             type="datetime-local"
             id="date"
             value={dateTimeNow}
-            className='ml-1 bg-inherit rounded-lg p-2'
+            className='w-full bg-inherit rounded-lg p-2 border border-gray-200 text-xl font-semibold text-gray-700' 
           />
         </div>
 
+      <div className='w-5/6 mt-auto'>
+        {formData.meal_description === '' ? 
+        <button 
+        
+        className='cursor-not-allowed font-semibold mx-auto w-full rounded-lg border border-green-700 text-green-800 text-lg h-12'
+        >upload image to log meal</button> 
+        : 
+        <button 
+          type="submit"
+          className='mx-auto w-full rounded-lg shadow-lg bg-green-700 hover:bg-green-800 text-white text-lg h-12'
+          >log meal</button>}
       </div>
       
-      <button 
-        type="submit"
-        className='mx-auto rounded-lg bg-green-700 text-white text-2xl w-48 h-16 my-6'
-        >log meal</button>
+      
     </form>
 
     </div>
