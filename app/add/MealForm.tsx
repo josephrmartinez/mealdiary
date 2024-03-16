@@ -20,10 +20,29 @@ function MealForm({ values, onSubmit }: Props) {
     calories: null,
   });
 
+
+  
+
+
+  const [dateTimeNow, setDateTimeNow] = useState("")
+
   useEffect(() => {
     console.log("new values detected", values)
     if (values) {
       setFormData(values);
+
+      const now = new Date();
+
+      // Format the date and time to match the datetime-local input format
+      const year = now.getFullYear();
+      const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+      const day = now.getDate().toString().padStart(2, '0');
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+
+      // Combine the date and time
+      const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+      setDateTimeNow(formattedDateTime)
     }
   }, [values]);
 
@@ -42,7 +61,7 @@ function MealForm({ values, onSubmit }: Props) {
   };
 
   return (
-    <div className='w-full mx-auto my-4'>
+    <div className='w-full mx-auto my-4 lg:my-0'>
 
     <form onSubmit={handleSubmit} className='flex flex-col'>
       <div>
@@ -54,7 +73,7 @@ function MealForm({ values, onSubmit }: Props) {
           onChange={(e) => setFormData({ ...formData, meal_description: e.target.value })}
         />
       </div>
-      <div className='grid grid-cols-2 gap-8 text-2xl font-semibold my-4 mx-2'>
+      <div className='grid grid-cols-2 gap-8 text-xl font-semibold my-4 mx-2'>
         <div>
           <label htmlFor="protein_grams">Protein (g):</label>
           <input
@@ -112,7 +131,16 @@ function MealForm({ values, onSubmit }: Props) {
             id="calories"
             value={formData.calories ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-4 w-24 border rounded-lg p-2'
+          />
+        </div>
+        <div className='col-span-2'>
+          <label htmlFor="date">Date and Time:</label>
+          <input
+            type="datetime-local"
+            id="date"
+            value={dateTimeNow}
+            className='ml-4  border rounded-lg p-2'
           />
         </div>
 

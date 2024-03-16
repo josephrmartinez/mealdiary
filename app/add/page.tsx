@@ -33,14 +33,9 @@ export default function LogMeal() {
       }
 
     return (
-        <div className="flex flex-col w-[512px] mt-4">
-
+        <div className="mt-4 grid lg:grid-cols-2 gap-3">
             <ImageUploader onUpload={handleUpload} />
-            <div>
-                <MealForm values={results} onSubmit={handleSubmitMeal}/>
-
-            </div>
-
+            <MealForm values={results} onSubmit={handleSubmitMeal}/>
         </div>
     )
 }

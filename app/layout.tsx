@@ -29,7 +29,7 @@ export default function RootLayout({
         </div>
       </nav>
 
-      <div className="animate-in flex-1 flex flex-col opacity-0 max-w-4xl px-3">
+      <div className="animate-in flex-1 flex flex-col opacity-0 max-w-5xl px-3">
         
         {children}
 
