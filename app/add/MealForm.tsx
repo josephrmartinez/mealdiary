@@ -67,7 +67,7 @@ function MealForm({ values, onSubmit }: Props) {
       <div>
         <label htmlFor="mealDescription" className='sr-only'>Meal Description:</label>
         <textarea
-          className='border rounded-lg p-2 w-full text-2xl text-center font-semibold'
+          className=' rounded-lg p-2 w-full text-2xl text-center font-semibold bg-inherit'
           id="mealDescription"
           value={formData.meal_description || ''}
           onChange={(e) => setFormData({ ...formData, meal_description: e.target.value })}
@@ -81,7 +81,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="protein_grams"
             value={formData.protein_grams ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2'
           />
         </div>
         <div>
@@ -91,7 +91,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="carbs_grams"
             value={formData.carbs_grams ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2'
           />
         </div>
         <div>
@@ -101,7 +101,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="sugar_grams"
             value={formData.sugar_grams ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2'
           />
         </div>
         <div>
@@ -111,7 +111,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="fat_grams"
             value={formData.fat_grams ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2'
           />
         </div>
         <div>
@@ -121,7 +121,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="fiber_grams"
             value={formData.fiber_grams ?? ''}
             onChange={handleChange}
-            className='ml-4 w-20 border rounded-lg p-2'
+            className='ml-1 w-20 bg-inherit rounded-lg p-2'
           />
         </div>
         <div>
@@ -131,7 +131,7 @@ function MealForm({ values, onSubmit }: Props) {
             id="calories"
             value={formData.calories ?? ''}
             onChange={handleChange}
-            className='ml-4 w-24 border rounded-lg p-2'
+            className='ml-1 w-24 bg-inherit rounded-lg p-2'
           />
         </div>
         <div className='col-span-2'>
@@ -140,7 +140,7 @@ function MealForm({ values, onSubmit }: Props) {
             type="datetime-local"
             id="date"
             value={dateTimeNow}
-            className='ml-4  border rounded-lg p-2'
+            className='ml-1 bg-inherit rounded-lg p-2'
           />
         </div>
 
