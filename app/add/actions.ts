@@ -1,8 +1,9 @@
 'use client'
 
 import { createClient } from "@/utils/supabase/client";
+import { MealInfo } from "../database.types";
 
-export const uploadToSupabase = async (image: File) => {
+export const uploadImageToSupabase = async (image: File) => {
 
     const supabase = createClient()
     const user = await supabase.auth.getUser()
@@ -33,4 +34,26 @@ export const uploadToSupabase = async (image: File) => {
             console.error('Error during file upload:', error);
             return null;
         }
+ };
+
+
+export const logMeal = async (mealInfo: MealInfo) => {
+
+    const supabase = createClient()
+
+    try {
+        const { data, error } = await supabase
+            .from('meals')
+            .insert(mealInfo)
+
+
+        if (error) {
+            console.error('Error inserting new row:', error.message);
+            
+        }
+    } catch (error) {
+        console.error('Error inserting new row:', error);
+    }
+
+    
  };

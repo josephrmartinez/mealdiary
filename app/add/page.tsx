@@ -2,40 +2,81 @@
 
 import { useState } from "react";
 import ImageUploader from "@/components/ImageUploader"
-import { uploadToSupabase } from "./actions"
+import { uploadImageToSupabase } from "./actions"
 import { AnalyzeImage } from "@/utils/ai/predictions";
 import MealForm from "./MealForm";
-import { NutritionInfo } from "../database.types";
+import { MealInfo } from "../database.types";
+import { logMeal } from "./actions";
 
+const defaultMealInfo = {
+    meal_description: '',
+    protein_grams: null,
+    carbs_grams: null,
+    sugar_grams: null,
+    fat_grams: null,
+    fiber_grams: null,
+    calories: null,
+    datetime: null,
+    image_url: ''
+  };
 
 
 export default function LogMeal() {
-    const [results, setResults] = useState<NutritionInfo | null>(null)
+    const [mealInfo, setMealInfo] = useState<MealInfo>(defaultMealInfo);
 
     const handleUpload = async (image: File) => {
-        const imageUrl = await uploadToSupabase(image);
+        try {
+        const imageUrl = await uploadImageToSupabase(image);
         console.log("imageUrl", imageUrl)
 
         if (imageUrl) {
+            setMealInfo(prevMealInfo => ({
+                ...prevMealInfo,
+                image_url: imageUrl
+              }))
         const prediction = await AnalyzeImage(imageUrl)
         console.log("prediction", prediction)
 
         if (prediction) {
             const predictionObject = JSON.parse(prediction)
-            setResults(predictionObject)
+            setMealInfo(prevMealInfo => ({
+                ...prevMealInfo,
+                ...predictionObject
+              }))
+            
+            const now = new Date();
+            // Format the date and time to match the datetime-local input format
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+            const day = now.getDate().toString().padStart(2, '0');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+
+            // Combine the date and time
+            const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            setMealInfo(prevMealInfo => ({
+                ...prevMealInfo,
+                datetime: formattedDateTime
+            }));
+              
+              
         }
         
         }
+      } catch (error) {
+        console.error("Error uploading image:", error);
       };
+    };
+    
 
-      const handleSubmitMeal = () => {
-        console.log("meal logged")
+      const handleSubmitMeal = async () => {
+        logMeal(mealInfo)
       }
 
     return (
         <div className="mt-4 grid lg:grid-cols-2 gap-3">
             <ImageUploader onUpload={handleUpload} />
-            <MealForm values={results} onSubmit={handleSubmitMeal}/>
+            <MealForm mealInfo={mealInfo} onSubmit={handleSubmitMeal} setMealInfo={setMealInfo}/>
         </div>
     )
 }
