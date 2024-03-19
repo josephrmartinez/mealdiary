@@ -52,6 +52,7 @@ export const logMeal = async (mealInfo: MealInfo) => {
             console.error('Error inserting new row:', error.message);
             
         }
+        return data;
     } catch (error) {
         console.error('Error inserting new row:', error);
     }
