@@ -45,6 +45,7 @@ export const logMeal = async (mealInfo: MealInfo) => {
         const { data, error } = await supabase
             .from('meals')
             .insert(mealInfo)
+            .select()
 
 
         if (error) {

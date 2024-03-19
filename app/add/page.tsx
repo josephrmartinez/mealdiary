@@ -70,7 +70,8 @@ export default function LogMeal() {
     
 
       const handleSubmitMeal = async () => {
-        logMeal(mealInfo)
+        const createMealEntry = await logMeal(mealInfo)
+        console.log("createMealEntry", createMealEntry)
       }
 
     return (
